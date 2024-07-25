@@ -1,11 +1,13 @@
 const Koa = require('koa');
 const Router = require('koa-router');
+const cors = require('@koa/cors');
 
 const { categoryList, createCategory } = require('./controllers/categories');
 const { createTask, getTasks } = require('./controllers/tasks');
 
 const app = new Koa();
 app.use(require('koa-bodyparser')());
+app.use(cors());
 
 app.use(async (ctx, next) => {
     try {
