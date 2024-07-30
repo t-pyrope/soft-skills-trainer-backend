@@ -23,7 +23,7 @@ module.exports.createTask = async function createTask(ctx, next){
 }
 
 module.exports.getTasks = async function getTasks (ctx, next) {
-    const category = await Category.findOne({ id: ctx.request.body.categoryId });
+    const category = await Category.findOne({ id: ctx.query.categoryId });
     const tasks = await Task.find({ category: category._id });
 
     ctx.body = { tasks: tasks.map(taskMapper) };
