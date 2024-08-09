@@ -4,6 +4,8 @@ const cors = require('@koa/cors');
 
 const { categoryList, createCategory } = require('./controllers/categories');
 const { createTask, getTasks } = require('./controllers/tasks');
+const { login } = require('./controllers/login');
+const { registerTest } = require('./controllers/register');
 
 const app = new Koa();
 app.use(require('koa-bodyparser')());
@@ -25,6 +27,9 @@ app.use(async (ctx, next) => {
 })
 
 const router = new Router({ prefix: '/api' });
+
+router.post('/login', login);
+router.post('/registerTest', registerTest);
 
 router.get('/categories', categoryList);
 router.post('/category', createCategory);
