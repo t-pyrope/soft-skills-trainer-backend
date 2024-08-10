@@ -6,6 +6,7 @@ const { categoryList, createCategory } = require('./controllers/categories');
 const { createTask, getTasks } = require('./controllers/tasks');
 const { login } = require('./controllers/login');
 const { registerTest } = require('./controllers/register');
+const { oauth, oauthCallback } = require('./controllers/oauth');
 
 const app = new Koa();
 app.use(require('koa-bodyparser')());
@@ -30,6 +31,8 @@ const router = new Router({ prefix: '/api' });
 
 router.post('/login', login);
 router.post('/registerTest', registerTest);
+router.get('/oauth/:provider', oauth);
+router.post('/oauth_callback', oauthCallback);
 
 router.get('/categories', categoryList);
 router.post('/category', createCategory);

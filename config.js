@@ -8,5 +8,12 @@ module.exports = {
         iterations: 12000,
         length: 128,
         digest: 'sha512',
+    },
+    providers: {
+        facebook: {
+            app_id: process.env.FACEBOOK_APP_ID || 'facebook_app_id',
+            app_secret: process.env.FACEBOOK_APP_SECRET || 'facebook_app_secret',
+            callback_uri: `${process.env.URI || 'http://localhost:3000/'}oauth/facebook`
+        }
     }
 }
