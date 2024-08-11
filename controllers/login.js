@@ -1,4 +1,3 @@
-const { v4: uuid } = require('uuid');
 const passport = require('../libs/passport');
 
 module.exports.login = async function login (ctx, next){
@@ -13,6 +12,6 @@ module.exports.login = async function login (ctx, next){
 
         const token = await ctx.login(user)
 
-        ctx.body = { token };
+        ctx.body = { token, user: { email: user.email, displayName: user.displayName } };
     })(ctx, next);
 }
