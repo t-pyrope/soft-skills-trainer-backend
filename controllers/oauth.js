@@ -27,7 +27,7 @@ module.exports.oauthCallback = async function oauthCallback(ctx, next) {
             return;
         }
 
-        const token = uuid();
+        const token = await ctx.login(user);
 
         ctx.body = { token };
     })(ctx, next);

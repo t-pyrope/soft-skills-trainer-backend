@@ -1,12 +1,18 @@
 const Koa = require('koa');
 const Router = require('koa-router');
 const cors = require('@koa/cors');
+const { v4: uuid } = require('uuid');
 
 const { categoryList, createCategory } = require('./controllers/categories');
 const { createTask, getTasks } = require('./controllers/tasks');
 const { login } = require('./controllers/login');
 const { registerTest } = require('./controllers/register');
 const { oauth, oauthCallback } = require('./controllers/oauth');
+const { me } = require('./controllers/me');
+
+const Session = require('./models/Session');
+
+const mustBeAuthenticated = require('./libs/mustBeAuthenticated');
 
 const app = new Koa();
 app.use(require('koa-bodyparser')());
@@ -27,6 +33,41 @@ app.use(async (ctx, next) => {
     }
 })
 
+app.use((ctx, next) => {
+    ctx.login = async function (user) {
+        const token = uuid();
+
+        const session = new Session({
+            token,
+            user,
+            lastVisit: new Date(),
+        })
+
+        await session.save();
+
+        return token;
+    }
+
+    return next();
+})
+
+router.use(async (ctx, next) => {
+    const header = ctx.request.get('Authorization');
+    if (!header) return next();
+
+    const token = header.split(' ')[1];
+    const session = await Session.findOne({ token }).populate('user');
+
+    if (!session) {
+        ctx.throw(401, 'Uncorrect token')
+    } else {
+        await session.update({ lastVisit: new Date() })
+        ctx.user = session.user;
+    }
+
+    return next();
+})
+
 const router = new Router({ prefix: '/api' });
 
 router.post('/login', login);
@@ -34,11 +75,13 @@ router.post('/registerTest', registerTest);
 router.get('/oauth/:provider', oauth);
 router.post('/oauth_callback', oauthCallback);
 
+router.get('/me', mustBeAuthenticated, me);
+
 router.get('/categories', categoryList);
 router.post('/category', createCategory);
 
 router.get('/tasks', getTasks);
-router.post('/task', createTask);
+router.post('/task', mustBeAuthenticated, createTask);
 
 app.use(router.routes());
 
