@@ -51,6 +51,8 @@ app.use((ctx, next) => {
     return next();
 })
 
+const router = new Router({ prefix: '/api' });
+
 router.use(async (ctx, next) => {
     const header = ctx.request.get('Authorization');
     if (!header) return next();
@@ -67,8 +69,6 @@ router.use(async (ctx, next) => {
 
     return next();
 })
-
-const router = new Router({ prefix: '/api' });
 
 router.post('/login', login);
 router.post('/registerTest', registerTest);
