@@ -1,5 +1,7 @@
 const passport = require('../libs/passport');
 
+const Session = require('../models/Session');
+
 module.exports.login = async function login (ctx, next){
     await passport.authenticate('local', async (err, user, info) => {
         if (err) throw err;
@@ -14,4 +16,13 @@ module.exports.login = async function login (ctx, next){
 
         ctx.body = { token, user: { email: user.email, displayName: user.displayName } };
     })(ctx, next);
+}
+
+module.exports.logout = async function logout (ctx, next) {
+    const header = ctx.request.get('Authorization');
+    const token = header.split(' ')[1];
+
+    await Session.deleteOne({ token });
+
+    ctx.body = { status: 'ok' }
 }
