@@ -22,7 +22,7 @@ module.exports.logout = async function logout (ctx, next) {
     const header = ctx.request.get('Authorization');
     const token = header.split(' ')[1];
 
-    await Session.deleteOne({ token });
+    await Session.findOneAndDelete({ token });
 
     ctx.body = { status: 'ok' }
 }

@@ -58,12 +58,13 @@ router.use(async (ctx, next) => {
     if (!header) return next();
 
     const token = header.split(' ')[1];
-    const session = await Session.findOne({ token }).populate('user');
+    const session = await Session
+        .findOneAndUpdate({ token }, { lastVisit: new Date() })
+        .populate('user');
 
     if (!session) {
         ctx.throw(401, 'Uncorrect token')
     } else {
-        await session.update({ lastVisit: new Date() })
         ctx.user = session.user;
     }
 
