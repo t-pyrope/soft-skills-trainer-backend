@@ -13,7 +13,7 @@ const userSchema = new mongoose.Schema({
                 validator(value) {
                     return /^[-.\w]+@([\w-]+\.)+[\w-]{2,12}$/.test(value);
                 },
-                message: 'Некорректный email.',
+                message: 'Email is not correct',
             },
         ]
     },
@@ -27,7 +27,12 @@ const userSchema = new mongoose.Schema({
     },
     salt: {
         type: String,
-    }
+    },
+
+    verificationToken: {
+        type: String,
+        index: true,
+    },
 }, {
     timestamps: true,
 })

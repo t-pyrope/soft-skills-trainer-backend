@@ -15,5 +15,9 @@ module.exports = {
             app_secret: process.env.FACEBOOK_APP_SECRET || 'facebook_app_secret',
             callback_uri: `${process.env.URI || 'http://localhost:3000/'}oauth/facebook`
         }
-    }
+    },
+    mailer: {
+        user: process.env.MAILER_USER || '',
+        password: process.env.MAILER_PASSWORD || '',
+    },
 }

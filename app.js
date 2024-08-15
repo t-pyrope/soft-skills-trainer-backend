@@ -6,7 +6,7 @@ const { v4: uuid } = require('uuid');
 const { categoryList, createCategory } = require('./controllers/categories');
 const { createTask, getTasks } = require('./controllers/tasks');
 const { login, logout } = require('./controllers/login');
-const { registerTest } = require('./controllers/register');
+const { registerTest, register, confirm } = require('./controllers/register');
 const { oauth, oauthCallback } = require('./controllers/oauth');
 const { me } = require('./controllers/me');
 
@@ -71,8 +71,11 @@ router.use(async (ctx, next) => {
     return next();
 })
 
-router.post('/login', login);
 router.post('/registerTest', registerTest);
+router.post('/register', register);
+router.post('/confirm/:verificationToken', confirm);
+
+router.post('/login', login);
 router.get('/oauth/:provider', oauth);
 router.post('/oauth_callback', oauthCallback);
 router.post('/logout', mustBeAuthenticated, logout)
