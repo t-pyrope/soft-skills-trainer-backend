@@ -52,7 +52,7 @@ module.exports.register = async function register(ctx, next) {
     await sendMail({
         template: 'confirmation',
         locals: {
-            href: `${process.env.URI}confirm/${verificationToken}`
+            href: `${process.env.URI}api/confirm/${verificationToken}`
         },
         to: email,
         subject: 'Confirm the email'

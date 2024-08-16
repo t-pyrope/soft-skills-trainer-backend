@@ -73,7 +73,7 @@ router.use(async (ctx, next) => {
 
 router.post('/registerTest', registerTest);
 router.post('/register', register);
-router.post('/confirm/:verificationToken', confirm);
+router.get('/confirm/:verificationToken', confirm);
 
 router.post('/login', login);
 router.get('/oauth/:provider', oauth);
