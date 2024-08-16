@@ -3,7 +3,7 @@ const Router = require('koa-router');
 const cors = require('@koa/cors');
 const { v4: uuid } = require('uuid');
 
-const { categoryList, createCategory } = require('./controllers/categories');
+const { categoryList, createCategory, getCategories} = require('./controllers/categories');
 const { createTask, getTasks } = require('./controllers/tasks');
 const { login, logout } = require('./controllers/login');
 const { registerTest, register, confirm } = require('./controllers/register');
@@ -82,7 +82,8 @@ router.post('/logout', mustBeAuthenticated, logout)
 
 router.get('/me', mustBeAuthenticated, me);
 
-router.get('/categories', categoryList);
+router.get('/categoryList', categoryList);
+router.get('/categories', getCategories);
 router.post('/category', createCategory);
 
 router.get('/tasks', getTasks);
