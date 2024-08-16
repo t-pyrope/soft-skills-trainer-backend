@@ -1,4 +1,6 @@
 const { v4: uuid } = require('uuid');
+const pug = require('pug');
+const path = require('path');
 
 const User = require('../models/User');
 const sendMail = require('../libs/sendMail');
@@ -65,15 +67,21 @@ module.exports.confirm = async function (ctx, next) {
     const user = await User.findOne({ verificationToken });
 
     if (!user) {
-        ctx.status = 400;
-        ctx.body = {
-            error: 'The link is not correct or outdated'
-        }
+        const html = pug.renderFile(
+            path.join(__dirname, '../templates/outdatedLink.pug')
+        )
+
+        ctx.set('content-type', 'text/html');
+        ctx.body = html;
     } else {
+        const html = pug.renderFile(
+            path.join(__dirname, '../templates/emailConfirmed.pug')
+        )
+
         user.verificationToken = undefined;
         await user.save();
-        const token = await ctx.login(user);
 
-        ctx.body = { token };
+        ctx.set('content-type', 'text/html');
+        ctx.body = html;
     }
 }
