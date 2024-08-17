@@ -14,6 +14,7 @@ module.exports.registerTest = async function registerTest(ctx, next) {
         email: `${nextName}@mail.com`,
         displayName: nextName,
         password: nextName,
+        doneTasks: [],
     });
 
     await user.setPassword(nextName);
@@ -44,6 +45,7 @@ module.exports.register = async function register(ctx, next) {
         email,
         displayName,
         verificationToken,
+        doneTasks: [],
     });
 
     await user.setPassword(password);

@@ -3,6 +3,17 @@ const crypto = require('crypto');
 const connection = require('../libs/connection');
 const config = require('../config');
 
+const doneTaskSchema = new mongoose.Schema({
+    id: {
+        type: String,
+        required: true,
+    },
+    date: {
+        type: Date,
+        required: true,
+    }
+}, {_id : false});
+
 const userSchema = new mongoose.Schema({
     email: {
         type: String,
@@ -28,11 +39,11 @@ const userSchema = new mongoose.Schema({
     salt: {
         type: String,
     },
-
     verificationToken: {
         type: String,
         index: true,
     },
+    doneTasks: [doneTaskSchema]
 }, {
     timestamps: true,
 })

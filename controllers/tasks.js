@@ -4,6 +4,7 @@ const Task = require('../models/Task');
 const Category = require('../models/Category');
 
 const taskMapper = require('../mappers/task');
+const userMapper = require('../mappers/user');
 
 module.exports.createTask = async function createTask(ctx, next){
     const category = await Category.findOne({ id: ctx.request.body.categoryId });
@@ -27,4 +28,22 @@ module.exports.getTasks = async function getTasks (ctx, next) {
     const tasks = await Task.find({ category: category._id });
 
     ctx.body = { tasks: tasks.map(taskMapper) };
+}
+
+module.exports.toggleTaskDone = async function toggleTaskDone (ctx, next) {
+    const { taskId } = ctx.request.body;
+    const task = await Task.findOne({ id: taskId });
+
+    if (!task) {
+        ctx.throw(404, `No task with ${taskId} id`);
+    }
+
+    const user = ctx.user;
+    user.doneTasks = !!user.doneTasks.find((task) => task.id === taskId)
+        ? user.doneTasks.filter((task) => task.id !== taskId)
+        : [ ...user.doneTasks, { id: taskId, date: new Date() } ]
+    await user.save();
+    ctx.user = user;
+
+    ctx.body = { user: userMapper(user) };
 }

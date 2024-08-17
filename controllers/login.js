@@ -2,6 +2,8 @@ const passport = require('../libs/passport');
 
 const Session = require('../models/Session');
 
+const userMapper = require('../mappers/user');
+
 module.exports.login = async function login (ctx, next){
     await passport.authenticate('local', async (err, user, info) => {
         if (err) throw err;
@@ -14,7 +16,7 @@ module.exports.login = async function login (ctx, next){
 
         const token = await ctx.login(user)
 
-        ctx.body = { token, user: { email: user.email, displayName: user.displayName } };
+        ctx.body = { token, user: userMapper(user) };
     })(ctx, next);
 }
 
