@@ -1,6 +1,5 @@
+const userMapper = require("../mappers/user");
+
 module.exports.me = async function me (ctx, next) {
-    ctx.body = {
-        email: ctx.user.email,
-        displayName: ctx.user.displayName,
-    }
+    ctx.body = userMapper(ctx.user);
 }
