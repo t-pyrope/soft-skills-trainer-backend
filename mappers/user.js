@@ -3,5 +3,6 @@ module.exports = function mapUser(user) {
         email: user.email,
         displayName: user.displayName,
         doneTasks: user.doneTasks,
+        preferences: user.preferences,
     }
 }
