@@ -15,7 +15,15 @@ module.exports = function authenticate(strategy, email, displayName, done) {
         }
 
         try {
-            const u = new User({ email, displayName });
+            const u = new User({
+                email,
+                displayName,
+                doneTasks: [],
+                preferences: {
+                    showDone: true,
+                },
+            });
+
             await u.save();
             done(null, u);
         } catch (err) {

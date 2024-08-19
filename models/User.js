@@ -43,7 +43,13 @@ const userSchema = new mongoose.Schema({
         type: String,
         index: true,
     },
-    doneTasks: [doneTaskSchema]
+    doneTasks: [doneTaskSchema],
+    preferences: {
+        showDone: {
+            type: Boolean,
+            required: true,
+        },
+    },
 }, {
     timestamps: true,
 })

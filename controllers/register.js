@@ -5,24 +5,6 @@ const path = require('path');
 const User = require('../models/User');
 const sendMail = require('../libs/sendMail');
 
-module.exports.registerTest = async function registerTest(ctx, next) {
-    const testUsers = await User.find({ displayName: { $regex: /^testUser\d+$/ } });
-
-    const nextName = `testUser${testUsers.length + 1}`;
-
-    const user = new User({
-        email: `${nextName}@mail.com`,
-        displayName: nextName,
-        password: nextName,
-        doneTasks: [],
-    });
-
-    await user.setPassword(nextName);
-    await user.save();
-
-    ctx.body = { user: { email: user.email, displayName: user.displayName } }
-}
-
 module.exports.register = async function register(ctx, next) {
     const verificationToken = uuid();
 
@@ -46,6 +28,9 @@ module.exports.register = async function register(ctx, next) {
         displayName,
         verificationToken,
         doneTasks: [],
+        preferences: {
+            showDone: true,
+        },
     });
 
     await user.setPassword(password);
