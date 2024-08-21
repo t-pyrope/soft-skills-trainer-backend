@@ -8,7 +8,8 @@ const taskSchema = new mongoose.Schema({
         required: true,
     },
     text: {
-        type: String,
+        type: Map,
+        of: String,
         required: true,
     },
     category: {
