@@ -4,11 +4,11 @@ const cors = require('@koa/cors');
 const { v4: uuid } = require('uuid');
 
 const { categoryList, createCategory, getCategories} = require('./controllers/categories');
-const { createTask, getTasks, toggleTaskDone } = require('./controllers/tasks');
+const { createTask, getTasks } = require('./controllers/tasks');
 const { login, logout } = require('./controllers/login');
 const { register, confirm } = require('./controllers/register');
 const { oauth, oauthCallback } = require('./controllers/oauth');
-const { me } = require('./controllers/me');
+const { me, toggleTaskDone } = require('./controllers/me');
 
 const Session = require('./models/Session');
 
