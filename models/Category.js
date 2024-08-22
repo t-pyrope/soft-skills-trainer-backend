@@ -3,7 +3,8 @@ const connection = require('../libs/connection');
 
 const categorySchema = new mongoose.Schema({
     title: {
-        type: String,
+        type: Map,
+        of: String,
         required: true,
     },
     id: {
